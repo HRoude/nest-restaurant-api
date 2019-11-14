@@ -1,19 +1,21 @@
-import { NestMiddleware } from '@nestjs/common';
+import { NestMiddleware, Injectable } from '@nestjs/common';
 import * as jwt from 'express-jwt';
 import { expressJwtSecret } from 'jwks-rsa';
+import {Request, Response} from 'express';
 
+@Injectable()
 export class AuthenticationMiddleware implements NestMiddleware {
-  use(req, res, next) {
+  use(req: Request, res: Response, next: Function) {
     jwt({
       secret: expressJwtSecret({
         cache: true,
         rateLimit: true,
         jwksRequestsPerMinute: 5,
-        jwksUri: 'https://dev-z8la2joc.auth0.com/.well-known/jwks.json',
+        jwksUri: 'https://dev-xm9o4dx7.auth0.com/.well-known/jwks.json',
       }),
 
       audience: 'http://localhost:3000',
-      issuer: 'https://dev-z8la2joc.auth0.com/',
+      issuer: 'https://dev-xm9o4dx7.auth0.com/',
       algorithm: 'RS256',
     })(req, res, err => {
       if (err) {
